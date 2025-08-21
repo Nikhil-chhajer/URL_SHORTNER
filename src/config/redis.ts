@@ -2,20 +2,20 @@ import { createClient } from "redis";
 import { serverconfig } from "./server";
 
 
-export const redisclient=createClient({
+export const redisClient=createClient({
     url:serverconfig.REDIS_URL,
 
 });
 
-redisclient.on('error',(err)=>{
+redisClient.on('error',(err)=>{
     console.log("redis not connected",err)
 })
-redisclient.on('connect',()=>{
+redisClient.on('connect',()=>{
     console.log("redis connected")
 })
 export async function initRedis(){
     try {
-        await redisclient.connect();
+        await redisClient.connect();
         console.log("")
 
     } catch (error) {
@@ -27,5 +27,5 @@ export async function initRedis(){
 
 
 export async function closeRedis(){
-await redisclient.quit()
+await redisClient.quit()
 }
