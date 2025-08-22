@@ -4,18 +4,25 @@ import v1Router from "./routers/v1/index.router";
 import v2Router from "./routers/v2/index.router";
 import logger from "./config/logger.config";
 import { attachCorrelationIdMiddleware } from "./middlewares/correlation.middleware";
+import {createExpressMiddleware} from '@trpc/server/adapters/express';
 // import { z } from "zod/v4";
 import { genericErrorHandler } from "./middlewares/error.middleware";
 import { initRedis } from "./config/redis";
 import { connectionDB } from "./config/db.config";
+import { trpcRouter } from "./routers/trpc";
+import { redirecturl } from "./controllers/url.controller";
 const app=express();
 const PORT=serverconfig.PORT;
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
+app.get('/:shortUrl',redirecturl)
 
 app.use(attachCorrelationIdMiddleware)
 app.use('/api/v1',v1Router)
 app.use('/api/v2',v2Router)
+app.use('/trpc',createExpressMiddleware({
+    router:trpcRouter
+}))
 app.listen(PORT,async ()=>{
 logger.info("server started at",PORT);
 //whatever we pass in {} in this is taken as data in logger.config file if donot use {} the data obj is empty

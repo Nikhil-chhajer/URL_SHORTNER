@@ -7,7 +7,8 @@ type Serverconfig={
     PORT:Number,
     MONGO_URI:string,
     REDIS_URL:string,
-    REDIS_COUNTER_KEY:string
+    REDIS_COUNTER_KEY:string,
+    BASE_URL:string
 }
 type DBConfig={
     DB_HOST:string,
@@ -27,5 +28,6 @@ export const serverconfig:Serverconfig={
     PORT:Number(process.env.PORT)||3001,
     MONGO_URI:process.env.MONGO_URI||'mongodb://localhost:27017/short_url',
     REDIS_URL:process.env.REDIS_URL||'redis://localhost:6379',
-    REDIS_COUNTER_KEY:(process.env.REDIS_COUNTER_KEY)||"url_shortner_counter"
+    REDIS_COUNTER_KEY:(process.env.REDIS_COUNTER_KEY)||"url_shortner_counter",
+    BASE_URL:process.env.BASE_URL||"http://localhost:7070"
 }
